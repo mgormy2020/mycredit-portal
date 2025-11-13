@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MyCredit Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .app {
+      max-width: 1200px;
+      width: 100%;
+      margin: 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px 28px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(90deg, #111827, #047857);
+      color: #f9fafb;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    header span {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Left side: login + basic info */
+    .left-pane,
+    .right-pane {
+      padding: 24px 28px;
+      overflow-y: auto;
+    }
+
+    .left-pane {
+      flex: 0 0 360px;
+      border-right: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .right-pane {
+      flex: 1;
+    }
+
+    /* LOGIN CARD */
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 20px 18px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card p.sub {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: #047857;
+      box-shadow: 0 0 0 1px #04785733;
+    }
+
+    .btn-primary {
+      width: 100%;
+      margin-top: 4px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: none;
+      background: #047857;
+      color: #ecfdf5;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #065f46;
+    }
+
+    .helper {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .helper a {
+      color: #047857;
+      text-decoration: none;
+    }
+
+    .helper a:hover {
+      text-decoration: underline;
+    }
+
+    /* SCORE CARD & PERSONAL INFO */
+
+    .score-value {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #047857;
+    }
+
+    .score-label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .score-meter {
+      margin-top: 16px;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .score-meter-fill {
+      width: 78%; /* example percentage */
+      height: 100%;
+      background: linear-gradient(90deg, #047857, #22c55e);
+    }
+
+    .personal-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .personal-row strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 6px;
+    }
+
+    /* RIGHT PANE / DASHBOARD */
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .account-group {
+      margin-bottom: 26px;
+    }
+
+    .account-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #f3f4f6;
+      border-radius: 10px 10px 0 0;
+      border: 1px solid #e5e7eb;
+      border-bottom: none;
+      font-size: 13px;
+    }
+
+    .account-header-title {
+      font-weight: 600;
+    }
+
+    .account-header-amount {
+      font-weight: 600;
+    }
+
+    .account-body {
+      border: 1px solid #e5e7eb;
+      border-radius: 0 0 10px 10px;
+      padding: 14px;
+      background: #ffffff;
+    }
+
+    .account-columns {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .account-col {
+      flex: 1;
+      min-width: 240px;
+      font-size: 13px;
+    }
+
+    .account-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .kv {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .kv span:first-child {
+      color: #6b7280;
+    }
+
+    .history-table {
+      margin-top: 10px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 10px;
+      font-size: 12px;
+    }
+
+    .month-row {
+      display: grid;
+      grid-template-columns: 40px repeat(12, 1fr);
+      gap: 2px;
+      margin-bottom: 4px;
+      align-items: center;
+    }
+
+    .month-row span {
+      text-align: center;
+    }
+
+    .status-dot {
+      font-size: 13px;
+    }
+    .status-dot.current {
+      color: #047857;
+    }
+    .status-dot.late {
+      color: #ea580c;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      font-size: 11px;
+      margin-top: 8px;
+      color: #4b5563;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-good {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .badge-attn {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .badge-closed {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .list-table {
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .list-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      padding: 8px 12px;
+      background: #ffffff;
+      align-items: center;
+    }
+
+    .list-row:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    .list-row-header {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+
+    .list-row span:last-child {
+      text-align: right;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      main {
+        flex-direction: column;
+      }
+      .left-pane {
+        flex-basis: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>MyCredit Portal</h1>
+        <span>Personal credit overview — mock dashboard</span>
+      </div>
+      <span>Demo Only</span>
+    </header>
+
+    <main>
+      <!-- LEFT: LOGIN + SCORE SUMMARY -->
+      <section class="left-pane">
+        <!-- LOGIN CARD -->
+        <div class="card" id="login-card">
+          <h2>Sign in</h2>
+          <p class="sub">Use a demo username and password to view your sample dashboard.</p>
+
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="demo.user" />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="••••••••" />
+          </div>
+
+          <button class="btn-primary" id="login-btn">Sign In</button>
+
+          <div class="helper">
+            Forgot your login? <a href="javascript:void(0)">Reset access</a>
+          </div>
+        </div>
+
+        <!-- SCORE / PERSONAL INFO SUMMARY -->
+        <div class="card">
+          <h2>Demo Credit Score</h2>
+          <p class="sub">Calculated using a sample scoring model. Not a real bureau score.</p>
+
+          <div class="score-value">726</div>
+          <div class="score-label">Good · as of Nov 2025 (demo)</div>
+
+          <div class="score-meter">
+            <div class="score-meter-fill"></div>
+          </div>
+
+          <div class="personal-row" style="margin-top: 16px;">
+            <div>
+              <strong>Name</strong>
+              Alex J. Sample
+            </div>
+            <div>
+              <strong>Reported Names</strong>
+              Alex J Sample<br />
+              Alex J Sampson
+            </div>
+          </div>
+
+          <div class="personal-row">
+            <div>
+              <strong>Primary Address</strong>
+              24 Demo Lane<br />
+              Sampletown, CT 06468
+            </div>
+            <div>
+              <strong>Employment Info</strong>
+              You have current employment listed<br />
+              <span class="pill">In Good Standing</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: DASHBOARD -->
+      <section class="right-pane" id="dashboard" style="opacity: 0.4;">
+        <!-- ACCOUNTS -->
+        <div class="account-group">
+          <div class="section-title">Accounts</div>
+          <div class="section-sub">
+            Here's every sample account on your demo report. Click rows for more details in a real app.
+          </div>
+
+          <!-- AUTO LOAN -->
+          <div class="account-header">
+            <div class="account-header-title">Auto Loan · Sample Auto Finance</div>
+            <div>
+              <span class="account-header-amount">$0.00</span>
+              &nbsp; <span class="badge badge-closed">Closed · Paid</span>
+            </div>
+          </div>
+          <div class="account-body">
+            <div class="account-columns">
+              <div class="account-col">
+                <h4>Overview</h4>
+                <div class="kv"><span>You have</span><span>0% left to pay</span></div>
+                <div class="kv"><span>Balance</span><span>$0</span></div>
+                <div class="kv"><span>Highest Balance</span><span>$7,193</span></div>
+              </div>
+              <div class="account-col">
+                <h4>Account Details</h4>
+                <div class="kv"><span>Account status</span><span>Closed · Paid</span></div>
+                <div class="kv"><span>Type</span><span>Auto Lease</span></div>
+                <div class="kv"><span>Responsibility</span><span>Joint Account</span></div>
+                <div class="kv"><span>Opened</span><span>May 29, 2020</span></div>
+                <div class="kv"><span>Term</span><span>39 months</span></div>
+              </div>
+            </div>
+
+            <div class="history-table">
+              <div style="margin-bottom: 6px; font-weight: 600;">
+                Payment History
+              </div>
+              <div style="font-size: 12px; color: #6b7280; margin-bottom: 6px;">
+                You've made <strong>100%</strong> of payments for this sample account on time.
+              </div>
+
+              <!-- Months header -->
+              <div class="month-row" style="font-weight: 600; color: #6b7280;">
+                <span>2025</span>
+                <span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span>
+              </div>
+              <!-- All on-time -->
+              <div class="month-row">
+                <span></span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+                <span class="status-dot current">✔</span>
+              </div>
+
+              <div class="legend">
+                <span><span class="status-dot current">✔</span> Current</span>
+                <span><span class="status-dot late">▲</span> Late</span>
+              </div>
+
+              <div class="kv" style="margin-top: 10px;">
+                <span>Last payment</span>
+                <span>Oct 01, 2025</span>
+              </div>
+              <div class="kv">
+                <span>Current Payment Status</span>
+                <span>Paid / Closed</span>
+              </div>
+              <div class="kv">
+                <span>Worst Payment Status</span>
+                <span>On time</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CREDIT CARDS -->
+        <div class="account-group">
+          <div class="section-title">Credit Cards</div>
+          <div class="section-sub">
+            These sample revolving accounts affect your utilization and on-time history.
+          </div>
+
+          <div class="list-table">
+            <div class="list-row list-row-header">
+              <span>Account</span><span>Status</span><span>Balance</span>
+            </div>
+            <div class="list-row">
+              <span>Mission Lane Sample Card</span>
+              <span><span class="badge badge-attn">Needs Attention</span></span>
+              <span>$455.00</span>
+            </div>
+            <div class="list-row">
+              <span>First Premier Sample</span>
+              <span><span class="badge badge-good">In good standing</span></span>
+              <span>$803.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HARD INQUIRIES -->
+        <div class="account-group">
+          <div class="section-title">Hard Inquiries</div>
+          <div class="section-sub">
+            Recent applications for credit may cause small, temporary dips in your score.
+          </div>
+
+          <div class="list-table">
+            <div class="list-row list-row-header">
+              <span>Creditor</span><span>Date</span><span>Type</span>
+            </div>
+            <div class="list-row">
+              <span>TBOM/Aspire MC (demo)</span>
+              <span>May 19, 2025</span>
+              <span>Credit Card</span>
+            </div>
+            <div class="list-row">
+              <span>WebBank/Imagine (demo)</span>
+              <span>May 16, 2025</span>
+              <span>Credit Card</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLLECTIONS -->
+        <div class="account-group">
+          <div class="section-title">Collections</div>
+          <div class="section-sub">
+            Sample collections accounts shown below. In a real report, resolving them could help your score.
+          </div>
+
+          <div class="list-table">
+            <div class="list-row list-row-header">
+              <span>Collector</span><span>Reported</span><span>Balance</span>
+            </div>
+            <div class="list-row">
+              <span>Midland Credit (demo)</span>
+              <span>Oct 24, 2025</span>
+              <span>$611.00</span>
+            </div>
+            <div class="list-row">
+              <span>Portfolio Recovery (demo)</span>
+              <span>Oct 25, 2025</span>
+              <span>$1,335.00</span>
+            </div>
+            <div class="list-row">
+              <span>Credit Collections (demo)</span>
+              <span>Nov 04, 2025</span>
+              <span>$304.00</span>
+            </div>
+            <div class="list-row">
+              <span>Credit Collections (demo)</span>
+              <span>Nov 04, 2025</span>
+              <span>$603.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUBLIC RECORDS -->
+        <div class="account-group">
+          <div class="section-title">Public Records</div>
+          <div class="section-sub">
+            Bankruptcies and legal judgments would appear here in a real report.
+          </div>
+
+          <div class="card" style="padding: 12px 14px;">
+            <p style="font-size: 13px; color: #047857;">
+              Looking good! As of this demo date, you have <strong>no public records</strong> on
+              your sample report.
+            </p>
+          </div>
+
+          <p class="footer-note">
+            This page is a front-end mockup meant for personal or design use only.
+            It does not represent an actual credit bureau or live financial data.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Simple fake login: hides dimmed dashboard state
+    const btn = document.getElementById("login-btn");
+    const dash = document.getElementById("dashboard");
+    btn.addEventListener("click", () => {
+      dash.style.opacity = "1";
+      dash.scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
